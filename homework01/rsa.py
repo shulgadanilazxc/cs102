@@ -1,6 +1,15 @@
 from typing import Tuple
 import random
 def is_prime(n: int) -> bool:
+    """
+        Tests to see if a number is prime.
+        >>> is_prime(2)
+        True
+        >>> is_prime(11)
+        True
+        >>> is_prime(8)
+        False
+        """
     from math import sqrt
     if n > 1:
         for i in range(2,round(sqrt(n))+1):
@@ -11,11 +20,24 @@ def is_prime(n: int) -> bool:
         return False
 
 def gcd(a: int, b: int) -> int:
+    """
+        Euclid's algorithm for determining the greatest common divisor.
+        >>> gcd(12, 15)
+        3
+        >>> gcd(3, 7)
+        1
+        """
     if b == 0: return a
     else:
         return gcd(b, a % b)
 
 def multiplicative_inverse(e: int, phi: int) -> int:
+    """
+       Euclid's extended algorithm for finding the multiplicative
+       inverse of two numbers.
+       >>> multiplicative_inverse(7, 40)
+       23
+       """
     x = 0; old_x = 1
     y = 1; old_y = 0
     gcd = phi; old_gcd = e
