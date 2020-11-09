@@ -44,12 +44,8 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    x = 0
-    old_x = 1
-    y = 1
-    old_y = 0
-    gcd = phi
-    old_gcd = e
+
+    x, old_x, y, old_y, gcd, old_gcd = 0, 1, 1, 0, phi, e
     while gcd != 0:
         quotient = old_gcd // gcd
         old_gcd, gcd = gcd, old_gcd - quotient * gcd
