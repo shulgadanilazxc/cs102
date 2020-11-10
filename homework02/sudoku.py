@@ -16,7 +16,8 @@ def display(grid: List[List[str]]) -> None:
     for row in range(9):
         print(
             "".join(
-                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
+                grid[row][col].center(width) + ("|" if str(col) in "25" else "")
+                for col in range(9)
             )
         )
         if str(row) in "25":
@@ -137,7 +138,9 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     values = find_possible_values(grid, pos)
     for value in values:
         grid[pos[0]][pos[1]] = value
+
         solution: Optional[List[List[str]]] = solve(grid)
+
         if solution:
             return solution
 
