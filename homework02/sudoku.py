@@ -138,9 +138,7 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     values = find_possible_values(grid, pos)
     for value in values:
         grid[pos[0]][pos[1]] = value
-
         solution: Optional[List[List[str]]] = solve(grid)
-
         if solution:
             return solution
 
@@ -235,4 +233,3 @@ if __name__ == "__main__":
             print(f"Puzzle {fname} can't be solved")
         else:
             display(solution)
-
