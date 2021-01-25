@@ -16,7 +16,8 @@ def display(grid: List[List[str]]) -> None:
     for row in range(9):
         print(
             "".join(
-                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
+                grid[row][col].center(width) + ("|" if str(col) in "25" else "")
+                for col in range(9)
             )
         )
         if str(row) in "25":
@@ -51,7 +52,7 @@ def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
 
 
 def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
-    """Возвращает все значения  для номера столбца, указанного в pos
+    """Возвращает все значения для номера столбца, указанного в pos
 
     >>> get_col([['1', '2', '.'], ['4', '5', '6'], ['7', '8', '9']], (0, 0))
     ['1', '4', '7']
@@ -137,8 +138,7 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     values = find_possible_values(grid, pos)
     for value in values:
         grid[pos[0]][pos[1]] = value
-        solution = []
-        solution = solve(grid)
+        solution: Optional[List[List[str]]] = solve(grid)
         if solution:
             return solution
 
