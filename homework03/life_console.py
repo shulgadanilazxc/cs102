@@ -48,7 +48,10 @@ class Console(UI):
         k = 0
         running = True
         while running:
-            if self.life.is_changing is False or self.life.is_max_generations_exceeded is True:
+            if (
+                self.life.is_changing is False
+                or self.life.is_max_generations_exceeded is True
+            ):
                 running = False
 
             screen.clear()
@@ -67,7 +70,9 @@ class Console(UI):
 
             screen.attron(curses.color_pair(1))
             screen.addstr(height - 1, 0, statusbarstr)
-            screen.addstr(height - 1, len(statusbarstr), " " * (width - len(statusbarstr) - 1))
+            screen.addstr(
+                height - 1, len(statusbarstr), " " * (width - len(statusbarstr) - 1)
+            )
             screen.attroff(curses.color_pair(3))
 
             screen.refresh()
@@ -81,12 +86,17 @@ if __name__ == "__main__":
     parser.add_argument("--rows", type=int, default=10, help="Количество строк")
     parser.add_argument("--columns", type=int, default=10, help="Количество столбцов")
     parser.add_argument(
-        "--max_generations", type=float, default=float("inf"), help="Максимальное число поколений"
+        "--max_generations",
+        type=float,
+        default=float("inf"),
+        help="Максимальное число поколений",
     )
 
     args = parser.parse_args()
 
-    life = GameOfLife(size=(args.rows, args.columns), max_generations=args.max_generations)
+    life = GameOfLife(
+        size=(args.rows, args.columns), max_generations=args.max_generations
+    )
 
     instance = Console(life)
     instance.run()

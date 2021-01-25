@@ -89,12 +89,19 @@ class GUI(UI):
                     if pause:
                         x, y = event.pos
                         cell_x, cell_y = x // self.cell_size, y // self.cell_size
-                        (x, y, cell_x, cell_y, self.life.curr_generation[cell_y][cell_x])
+                        (
+                            x,
+                            y,
+                            cell_x,
+                            cell_y,
+                            self.life.curr_generation[cell_y][cell_x],
+                        )
                         self.life.curr_generation[cell_y][cell_x] = abs(
                             self.life.curr_generation[cell_y][cell_x] - 1
                         )
                 elif (
-                    self.life.is_changing is False or self.life.is_max_generations_exceeded is True
+                    self.life.is_changing is False
+                    or self.life.is_max_generations_exceeded is True
                 ):
                     running = False
 
@@ -119,11 +126,15 @@ if __name__ == "__main__":
     default_width = 600
     default_height = 600
     default_cell_size = int(
-        min(default_width, default_height) / max(default_grid_width, default_grid_height)
+        min(default_width, default_height)
+        / max(default_grid_width, default_grid_height)
     )
 
     parser.add_argument(
-        "--grid_width", type=int, default=default_grid_width, help="Ширина игрового поля в клетках"
+        "--grid_width",
+        type=int,
+        default=default_grid_width,
+        help="Ширина игрового поля в клетках",
     )
     parser.add_argument(
         "--grid_height",
@@ -132,7 +143,9 @@ if __name__ == "__main__":
         help="Высота игрового поля в клетках",
     )
     parser.add_argument("--width", type=int, default=default_width, help="Ширина окна")
-    parser.add_argument("--height", type=int, default=default_height, help="Высота окна")
+    parser.add_argument(
+        "--height", type=int, default=default_height, help="Высота окна"
+    )
     parser.add_argument(
         "--cell_size", type=int, default=default_cell_size, help="Размер одной ячейки"
     )
