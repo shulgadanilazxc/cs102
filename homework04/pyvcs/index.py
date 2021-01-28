@@ -50,8 +50,12 @@ class GitIndexEntry(tp.NamedTuple):
             self.flags,
         )  # ints prepared for straight-forward packing
         bytecast_str = struct.pack("!LLLLLLLLLL20sH", *values)  # pack
-        bytecast_str += self.name.encode("ascii")  # simply concatenate the encoded string
-        if not len(bytecast_str) % 8 == 0:  # if struct is not aligned to 8 byte-divisible size
+        bytecast_str += self.name.encode(
+            "ascii"
+        )  # simply concatenate the encoded string
+        if (
+            not len(bytecast_str) % 8 == 0
+        ):  # if struct is not aligned to 8 byte-divisible size
             padding_size = 8 - (len(bytecast_str) % 8)  # calculate padded size
             # align size - remaining symbols to align
             for _ in range(0, padding_size):  # pad the entry
@@ -169,7 +173,9 @@ def ls_files(gitdir: pathlib.Path, details: bool = False) -> None:
             print(f"{entry.name}")
 
 
-def update_index(gitdir: pathlib.Path, paths: tp.List[pathlib.Path], write: bool = True) -> None:
+def update_index(
+    gitdir: pathlib.Path, paths: tp.List[pathlib.Path], write: bool = True
+) -> None:
     """
     Update index by adding new files
     """
@@ -184,7 +190,9 @@ def update_index(gitdir: pathlib.Path, paths: tp.List[pathlib.Path], write: bool
         with open(path, "rb") as f_name:
             data = f_name.read()  # read data
         obj_hash = bytes.fromhex(hash_object(data, "blob", True))  # write the object
-        os_stats = os.stat(path, follow_symlinks=False)  # i hope nobody uses links in repos
+        os_stats = os.stat(
+            path, follow_symlinks=False
+        )  # i hope nobody uses links in repos
         name_len = len(str(path))
         if name_len > 0xFFF:  # bit field magic
             name_len = 0xFFF

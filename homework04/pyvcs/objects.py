@@ -69,7 +69,9 @@ def read_object(sha: str, gitdir: pathlib.Path) -> tp.Tuple[str, bytes]:
     Return object content
     """
     obj_name = resolve_object(sha, gitdir)[0]
-    assert len(resolve_object(sha, gitdir)) == 1  # must resolve the hash to one object only
+    assert (
+        len(resolve_object(sha, gitdir)) == 1
+    )  # must resolve the hash to one object only
     obj_dir = pathlib.Path(obj_name[:2])
     obj_file_name = pathlib.Path(obj_name[2:])
     path = gitdir / "objects" / obj_dir / obj_file_name
