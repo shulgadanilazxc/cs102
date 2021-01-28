@@ -5,7 +5,7 @@ import unittest
 from unittest.mock import patch
 
 import pyvcs
-from pyfakefs.fake_filesystem_unittest import TestCase
+from pyfakefs.fake_filesystem_unittest import TestCase  # type: ignore
 from pyvcs.index import read_index, update_index
 from pyvcs.repo import repo_create
 from pyvcs.tree import commit_tree, write_tree
