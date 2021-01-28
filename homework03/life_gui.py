@@ -36,7 +36,6 @@ class GUI(UI):
         Отрисовка списка клеток с закрашиванием их в соответствующе цвета.
         """
         y = 0
-        x = 0
 
         for i in range(self.life.rows):
 
@@ -89,13 +88,7 @@ class GUI(UI):
                     if pause:
                         x, y = event.pos
                         cell_x, cell_y = x // self.cell_size, y // self.cell_size
-                        (
-                            x,
-                            y,
-                            cell_x,
-                            cell_y,
-                            self.life.curr_generation[cell_y][cell_x],
-                        )
+
                         self.life.curr_generation[cell_y][cell_x] = abs(
                             self.life.curr_generation[cell_y][cell_x] - 1
                         )
