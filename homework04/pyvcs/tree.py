@@ -74,6 +74,7 @@ def commit_tree(
     if not author:
         author = ""
     email = os.getenv("GIT_AUTHOR_EMAIL")
+    author = f"{os.getenv('GIT_AUTHOR_NAME')} <{os.getenv('GIT_AUTHOR_EMAIL')}>"
     if not email:
         email = ""
     if not parent:
