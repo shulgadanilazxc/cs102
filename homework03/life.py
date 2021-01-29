@@ -137,9 +137,9 @@ class GameOfLife:
         """
         for state in history:
             if self.curr_generation == state:
-                return True
+                return False
         # return self.prev_generation != self.curr_generation
-        return False
+        return True
 
     @staticmethod
     def from_file(filename: pathlib.Path) -> "GameOfLife":
