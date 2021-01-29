@@ -135,11 +135,15 @@ class GameOfLife:
         """
         Изменилось ли состояние клеток с предыдущего шага.
         """
+        return self.curr_generation != self.prev_generation
+
+    @property
+    def is_cycled(self) -> bool:
         for state in history:
             if self.curr_generation == state:
-                return False
-        # return self.prev_generation != self.curr_generation
-        return True
+                return True
+
+        return False
 
     @staticmethod
     def from_file(filename: pathlib.Path) -> "GameOfLife":
