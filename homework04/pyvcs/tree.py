@@ -1,6 +1,3 @@
-"""
-Operations on Git tree objects
-"""
 import os
 import pathlib
 import stat
@@ -30,17 +27,11 @@ def write_tree(
             name = f"{os.sep}".join(names[1:])
             mode = "40000"  # mode magic
             tree_entry = f"{mode} {prefix}\0".encode()
-            tree_entry += bytes.fromhex(
-                write_tree(gitdir, index, name)
-            )  # recursively call write_tree to add the underlying directory as a tree
-            tree_entries.append(
-                tree_entry
-            )  # adds the directory that exists in the root
-        else:  # we have a file
-            if (
-                dirname and entry.name.find(dirname) == -1
-            ):  # if dirname exists, but does not point to the current file
-                continue  # skip the file when creating subtree
+            tree_entry += bytes.fromhex(write_tree(gitdir, index, name))
+            tree_entries.append(tree_entry)
+        else:
+            if dirname and entry.name.find(dirname) == -1:
+                continue
             with open(entry.name, "rb") as content:
                 data = content.read()
             mode = str(oct(entry.mode))[2:]
@@ -59,30 +50,19 @@ def commit_tree(
     parent: tp.Optional[str] = None,
     author: tp.Optional[str] = None,
 ) -> str:
-    """
-    Commit a tree
-    """
     timestamp = int(time.mktime(time.localtime()))
     timezone = time.timezone if (time.localtime().tm_isdst == 0) else time.altzone
     timezone = int(timezone / 60 / 60 * -1)
     if timezone > 0:
-        tz_offset = f"+0{timezone}00"  # not counting exotic timezones
+        tz_offset = f"+0{timezone}00"
     elif timezone < 0:
-        tz_offset = f"-0{timezone}00"  # not counting exotic timezones
+        tz_offset = f"-0{timezone}00"
     else:
-        tz_offset = "0000"  # not sure is it is so
-    if not author:
-        author = ""
+        tz_offset = "0000"
+    author_name = os.getenv("GIT_AUTHOR_NAME")
     email = os.getenv("GIT_AUTHOR_EMAIL")
-    author = f"{os.getenv('GIT_AUTHOR_NAME')} <{os.getenv('GIT_AUTHOR_EMAIL')}>"
-    if not email:
-        email = ""
-    if not parent:
-        parent = ""
-
-    author_str = f"{author} <{email}>"
-
-    # let's say that author and committer are the same
+    if email or author_name:
+        author = f"{author_name} <{email}>"
     data = f"tree {tree}\n"
     if parent:
         data += f"parent {parent}\n"
