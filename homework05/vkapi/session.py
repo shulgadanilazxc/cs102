@@ -50,12 +50,12 @@ class Session(requests.Session):
         adapter = TimeoutHTTPAdapter(timeout=timeout, max_retries=retry)
         self.mount(self.base_url, adapter)
 
-    def get(    #type: ignore
+    def get(  # type: ignore
         self, url: str, *args: tp.Any, **kwargs: tp.Any
     ) -> requests.Response:  # type:ignore
         return super().get(self.base_url + "/" + url, *args, **kwargs)
 
-    def post(   #type: ignore
+    def post(  # type: ignore
         self, url: str, *args: tp.Any, **kwargs: tp.Any
     ) -> requests.Response:  # type:ignore
         return super().post(self.base_url + "/" + url, *args, **kwargs)
