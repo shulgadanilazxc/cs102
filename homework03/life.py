@@ -14,6 +14,7 @@ Grid = tp.List[Cells]
 
 history: tp.List[Grid] = []
 
+
 class GameOfLife:
     """
     Business logic class
@@ -74,7 +75,9 @@ class GameOfLife:
         Gets neighbor positions for a cell
         """
         neighbors = []
-        shifts = ((i, j) for i in [-1, 0, 1] for j in [-1, 0, 1])  # possible shifts for neighbors
+        shifts = (
+            (i, j) for i in [-1, 0, 1] for j in [-1, 0, 1]
+        )  # possible shifts for neighbors
         for x_c, y_c in shifts:  # 9 possible cells in a quadrant
             if (x_c, y_c) == (0, 0):  # except the one we check
                 continue
@@ -135,7 +138,7 @@ class GameOfLife:
         for state in history:
             if self.curr_generation == state:
                 return True
-        #return self.prev_generation != self.curr_generation
+        # return self.prev_generation != self.curr_generation
         return False
 
     @staticmethod
