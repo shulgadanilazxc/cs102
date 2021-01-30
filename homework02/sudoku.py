@@ -52,7 +52,7 @@ def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
 
 
 def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
-    """Возвращает все значения для номера столбца, указанного в pos
+    """Возвращает все значения  для номера столбца, указанного в pos
 
     >>> get_col([['1', '2', '.'], ['4', '5', '6'], ['7', '8', '9']], (0, 0))
     ['1', '4', '7']
@@ -80,6 +80,46 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     row = (row // 3) * 3
     col = (col // 3) * 3
     return [grid[row + i][col + j] for i in range(3) for j in range(3)]
+
+
+def get_diag(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
+    """Возвращает все значения из диагоналей, на которых находится pos"""
+    values = []
+    values.append(grid[pos[0]][pos[1]])
+
+    # Вверх и влево
+    i = pos[0]
+    j = pos[1]
+    while i > 0 and j > 0:
+        i -= 1
+        j -= 1
+        values.append(grid[i][j])
+
+    # Вниз и влево
+    i = pos[0]
+    j = pos[1]
+    while i < 8 and j > 0:
+        i += 1
+        j -= 1
+        values.append(grid[i][j])
+
+    # Вверх и вправо
+    i = pos[0]
+    j = pos[1]
+    while i > 0 and j < 8:
+        i -= 1
+        j += 1
+        values.append(grid[i][j])
+
+    # Вниз и вправо
+    i = pos[0]
+    j = pos[1]
+    while i < 8 and j < 8:
+        i += 1
+        j += 1
+        values.append(grid[i][j])
+
+    return values
 
 
 def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
@@ -115,6 +155,7 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
         - set(get_row(grid, pos))
         - set(get_col(grid, pos))
         - set(get_block(grid, pos))
+        # - set(get_diag(grid, pos))
     )
 
 
