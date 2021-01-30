@@ -4,7 +4,7 @@ import stat
 import time
 import typing as tp
 
-from pyvcs.index import GitIndexEntry, read_index
+from pyvcs.index import GitIndexEntry, read_index   #type: ignore
 from pyvcs.objects import hash_object
 from pyvcs.refs import get_ref, is_detached, resolve_head, update_ref
 
@@ -67,7 +67,7 @@ def commit_tree(
         and "GIT_AUTHOR_EMAIL" in os.environ
     ):
         author = (
-            os.getenv("GIT_AUTHOR_NAME")
+            os.getenv("GIT_AUTHOR_NAME")    #type: ignore
             + " "
             + f'<{os.getenv("GIT_AUTHOR_EMAIL")}>'  # type:ignore
         )  # type:ignore
