@@ -9,7 +9,9 @@ from pyvcs.objects import hash_object
 from pyvcs.refs import get_ref, is_detached, resolve_head, update_ref
 
 
-def write_tree(gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str = "") -> str:
+def write_tree(
+    gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str = ""
+) -> str:
     tree_content: tp.List[tp.Tuple[int, str, bytes]] = []
     subtrees: tp.Dict[str, tp.List[GitIndexEntry]] = dict()
     files = []
@@ -17,7 +19,9 @@ def write_tree(gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str
         files.append(str(x))
     for entry in index:
         if entry.name in files:
-            tree_content.append((entry.mode, str(gitdir.parent / entry.name), entry.sha1))
+            tree_content.append(
+                (entry.mode, str(gitdir.parent / entry.name), entry.sha1)
+            )
         else:
             dname = entry.name.lstrip(dirname).split("/", 1)[0]
             if not dname in subtrees:
@@ -29,7 +33,9 @@ def write_tree(gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str
                 (
                     0o40000,
                     str(gitdir.parent / dirname / name),
-                    bytes.fromhex(write_tree(gitdir, subtrees[name], dirname + "/" + name)),
+                    bytes.fromhex(
+                        write_tree(gitdir, subtrees[name], dirname + "/" + name)
+                    ),
                 )
             )
         else:
@@ -42,7 +48,8 @@ def write_tree(gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str
             )
     tree_content.sort(key=lambda x: x[1])
     data = b"".join(
-        f"{elem[0]:o} {elem[1].split('/')[-1]}".encode() + b"\00" + elem[2] for elem in tree_content
+        f"{elem[0]:o} {elem[1].split('/')[-1]}".encode() + b"\00" + elem[2]
+        for elem in tree_content
     )
     return hash_object(data, "tree", write=True)
 
@@ -54,9 +61,15 @@ def commit_tree(
     parent: tp.Optional[str] = None,
     author: tp.Optional[str] = None,
 ) -> str:
-    if author is None and "GIT_AUTHOR_NAME" in os.environ and "GIT_AUTHOR_EMAIL" in os.environ:
+    if (
+        author is None
+        and "GIT_AUTHOR_NAME" in os.environ
+        and "GIT_AUTHOR_EMAIL" in os.environ
+    ):
         author = (
-            os.getenv("GIT_AUTHOR_NAME") + " " + f'<{os.getenv("GIT_AUTHOR_EMAIL")}>'  # type:ignore
+            os.getenv("GIT_AUTHOR_NAME")
+            + " "
+            + f'<{os.getenv("GIT_AUTHOR_EMAIL")}>'  # type:ignore
         )  # type:ignore
     if time.timezone > 0:
         tz_str = "-"
@@ -68,6 +81,8 @@ def commit_tree(
     if parent is not None:
         commit_data.append(f"parent {parent}")
     commit_data.append(f"author {author} {int(time.mktime(time.localtime()))} {tz_str}")
-    commit_data.append(f"committer {author} {int(time.mktime(time.localtime()))} {tz_str}")
+    commit_data.append(
+        f"committer {author} {int(time.mktime(time.localtime()))} {tz_str}"
+    )
     commit_data.append(f"\n{message}\n")
     return hash_object("\n".join(commit_data).encode(), "commit", write=True)

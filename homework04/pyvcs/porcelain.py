@@ -3,7 +3,13 @@ import pathlib
 import typing as tp
 
 from pyvcs.index import read_index, update_index
-from pyvcs.objects import commit_parse, find_object, find_tree_files, read_object, read_tree
+from pyvcs.objects import (
+    commit_parse,
+    find_object,
+    find_tree_files,
+    read_object,
+    read_tree,
+)
 from pyvcs.refs import get_ref, is_detached, resolve_head, update_ref
 from pyvcs.tree import commit_tree, write_tree
 
@@ -55,7 +61,9 @@ def checkout(gitdir: pathlib.Path, obj_name: str) -> None:
                             f.write(data)
                         (tree_path / file_data[2]).chmod(file_data[0])
         if "parent" in data_of_comm:
-            data_of_comm = commit_parse((read_object(data_of_comm["parent"], gitdir)[1]))
+            data_of_comm = commit_parse(
+                (read_object(data_of_comm["parent"], gitdir)[1])
+            )
         else:
             doing = False
     for to_remove_directory in gitdir.parent.glob("*"):
